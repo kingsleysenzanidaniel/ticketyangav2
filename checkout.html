@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Lion King · Get Your Ticket</title>
+<meta name="theme-color" content="#0b0604">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;background:#0b0604;color:#fff;font-family:'Inter',system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+body{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100svh;padding:28px 18px max(28px,env(safe-area-inset-bottom))}
+.bg{position:fixed;inset:-10%;background:url(poster.jpg) center/cover;filter:blur(50px) brightness(.45) saturate(1.3);z-index:0}
+.card{position:relative;z-index:1;width:100%;max-width:440px;padding:32px 28px;border-radius:28px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);box-shadow:0 20px 60px rgba(0,0,0,.4);opacity:0;transform:translateY(24px);animation:in 1s cubic-bezier(.2,.8,.2,1) .1s forwards}
+h1{font-size:22px;font-weight:600;letter-spacing:.01em}
+.sub{margin:6px 0 24px;font-size:13px;color:rgba(255,255,255,.55)}
+label{display:block;margin-bottom:16px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+input,select{display:block;width:100%;height:50px;margin-top:8px;padding:0 18px;border:1px solid rgba(255,255,255,.14);border-radius:14px;background:rgba(0,0,0,.35);color:#fff;font:400 16px 'Inter',system-ui,sans-serif;outline:0;transition:border-color .3s,box-shadow .3s}
+select option{color:#000}
+input:focus,select:focus{border-color:#ff6a1a;box-shadow:0 0 0 4px rgba(255,106,26,.18)}
+.row{display:flex;gap:12px}.row label{flex:1}
+button{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;height:56px;margin-top:8px;border:0;border-radius:99px;background:#fff;color:#0b0604;font:600 16px 'Inter',system-ui,sans-serif;letter-spacing:.01em;cursor:pointer;box-shadow:0 10px 40px rgba(255,106,26,.25);transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s}
+button:hover{transform:translateY(-3px);box-shadow:0 16px 50px rgba(255,106,26,.45)}
+button:active{transform:scale(.97)}
+button i{width:8px;height:8px;border-radius:50%;background:#ff6a1a;animation:p 1.8s infinite}
+small{display:block;margin-top:18px;text-align:center;font-size:11px;letter-spacing:.14em;color:rgba(255,255,255,.55)}
+small b{font-weight:600;color:rgba(255,255,255,.85)}
+a.back{position:relative;z-index:1;margin-top:20px;font-size:13px;color:rgba(255,255,255,.55);text-decoration:none}
+@keyframes in{to{opacity:1;transform:none}}
+@keyframes p{0%{box-shadow:0 0 0 0 rgba(255,106,26,.6)}100%{box-shadow:0 0 0 10px rgba(255,106,26,0)}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;opacity:1!important;transform:none!important}}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<form class="card" id="f" autocomplete="on">
+  <h1>Get your ticket</h1>
+  <p class="sub">Jacaranda School presents The Lion King</p>
+  <label>Full name<input name="name" required autocomplete="name" placeholder="Jane Wanjiku"></label>
+  <label>Email<input name="email" type="email" required autocomplete="email" placeholder="jane@example.com"></label>
+  <label>Phone<input name="phone" type="tel" required autocomplete="tel" placeholder="07xx xxx xxx"></label>
+  <div class="row">
+    <label>Ticket type
+      <select name="type"><option>Regular</option><option>VIP</option><option>Child</option></select>
+    </label>
+    <label>Quantity
+      <input name="qty" type="number" min="1" max="10" value="1" required>
+    </label>
+  </div>
+  <button type="submit"><i></i>Buy Ticket</button>
+  <small>Powered by <b>Ticket Yanga</b></small>
+</form>
+<a class="back" href="index.html">← Back</a>
+<script>
+document.getElementById('f').addEventListener('submit',function(e){
+  e.preventDefault();
+  var d=Object.fromEntries(new FormData(this).entries());
+  var c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',s='';
+  for(var i=0;i<6;i++)s+=c[Math.floor(Math.random()*c.length)];
+  d.code='LK-'+s;
+  d.issued=new Date().toISOString();
+  try{sessionStorage.setItem('ty_order',JSON.stringify(d))}catch(x){localStorage.setItem('ty_order',JSON.stringify(d))}
+  location.href='ticket.html';
+});
+</script>
+</body>
+</html>
