@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Lion King · Buy Tickets</title>
+<meta property="og:title" content="The Lion King · Buy Tickets">
+<meta property="og:image" content="poster.jpg">
+<meta name="theme-color" content="#0b0604">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#0b0604;color:#fff;font-family:'Inter',system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+body{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:space-between;min-height:100svh;overflow:hidden;padding-bottom:max(28px,env(safe-area-inset-bottom))}
+.bg{position:fixed;inset:-10%;background:url(poster.jpg) center/cover;filter:blur(50px) brightness(.45) saturate(1.3);z-index:0}
+.poster{position:relative;z-index:1;width:100%;display:flex;justify-content:center;opacity:0;transform:translateY(24px) scale(1.03);animation:in 1.4s cubic-bezier(.2,.8,.2,1) .1s forwards}
+.poster img{display:block;max-width:100vw;max-height:calc(100svh - 150px);height:auto;width:auto;-webkit-mask-image:linear-gradient(#000 82%,transparent);mask-image:linear-gradient(#000 82%,transparent)}
+.cta{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:16px;margin-top:-28px;opacity:0;transform:translateY(20px);animation:in 1.1s cubic-bezier(.2,.8,.2,1) .7s forwards}
+button{display:flex;align-items:center;justify-content:center;gap:12px;height:56px;padding:0 34px;border:0;border-radius:99px;background:#fff;color:#0b0604;font:600 16px 'Inter',system-ui,sans-serif;letter-spacing:.01em;cursor:pointer;box-shadow:0 10px 40px rgba(255,106,26,.25);transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s}
+button:hover{transform:translateY(-3px);box-shadow:0 16px 50px rgba(255,106,26,.45)}
+button:active{transform:scale(.97)}
+button i{width:8px;height:8px;border-radius:50%;background:#ff6a1a;animation:p 1.8s infinite}
+small{font-size:11px;font-weight:400;letter-spacing:.14em;color:rgba(255,255,255,.55)}
+small b{font-weight:600;color:rgba(255,255,255,.85)}
+@keyframes in{to{opacity:1;transform:none}}
+@keyframes p{0%{box-shadow:0 0 0 0 rgba(255,106,26,.6)}100%{box-shadow:0 0 0 10px rgba(255,106,26,0)}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;opacity:1!important;transform:none!important}}
+
+/* ---------- Popup ---------- */
+.ov{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(5,3,2,.6);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;pointer-events:none;transition:opacity .35s}
+.ov.open{opacity:1;pointer-events:auto}
+.modal{position:relative;width:100%;max-width:440px;max-height:calc(100svh - 36px);overflow:auto;border-radius:28px;background:rgba(30,20,15,.78);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);box-shadow:0 20px 60px rgba(0,0,0,.5);transform:translateY(24px) scale(.98);transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.ov.open .modal{transform:none}
+.x{position:absolute;top:14px;right:14px;z-index:3;width:36px;height:36px;padding:0;border-radius:50%;background:rgba(0,0,0,.45);color:#fff;font-size:18px;box-shadow:none}
+.x:hover{box-shadow:none;background:rgba(0,0,0,.65)}
+.step{display:none}.step.on{display:block}
+.form{padding:32px 28px}
+.form h2{font-size:22px;font-weight:600}
+.sub{margin:6px 0 24px;font-size:13px;color:rgba(255,255,255,.55)}
+label{display:block;margin-bottom:16px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+input,select{display:block;width:100%;height:50px;margin-top:8px;padding:0 18px;border:1px solid rgba(255,255,255,.14);border-radius:14px;background:rgba(0,0,0,.35);color:#fff;font:400 16px 'Inter',system-ui,sans-serif;outline:0;transition:border-color .3s,box-shadow .3s}
+select option{color:#000}
+input:focus,select:focus{border-color:#ff6a1a;box-shadow:0 0 0 4px rgba(255,106,26,.18)}
+.row{display:flex;gap:12px}.row label{flex:1}
+.form button[type=submit],.full-btn{width:100%;margin-top:8px}
+.form small,.tk small{display:block;margin-top:16px;text-align:center}
+button:disabled{opacity:.65;cursor:wait;transform:none;box-shadow:0 10px 40px rgba(255,106,26,.25)}
+#dl-fallback{display:none;margin-top:14px;text-align:center;font-size:12px;color:rgba(255,255,255,.7);text-decoration:underline}
+/* ticket */
+.tk img{display:block;width:100%;height:190px;object-fit:cover;object-position:center top;-webkit-mask-image:linear-gradient(#000 70%,transparent);mask-image:linear-gradient(#000 70%,transparent)}
+.tb{padding:0 28px 26px;margin-top:-20px;position:relative}
+.ev{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+.tb h2{margin:4px 0 20px;font-size:24px;font-weight:600}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 12px}
+.grid .full{grid-column:1/-1}
+.k{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.v{margin-top:4px;font-size:15px;font-weight:600;word-break:break-word}
+.tear{position:relative;margin:22px -28px;border-top:2px dashed rgba(255,255,255,.18)}
+.tear:before,.tear:after{content:"";position:absolute;top:-11px;width:20px;height:20px;border-radius:50%;background:#1a110c}
+.tear:before{left:-10px}.tear:after{right:-10px}
+.code{text-align:center;margin-bottom:20px}
+.code .v{font-size:26px;letter-spacing:.2em;color:#ff6a1a}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="poster"><img src="poster.jpg" alt="Jacaranda School presents The Lion King"></div>
+<div class="cta">
+  <button type="button" id="buy"><i></i>Buy Tickets</button>
+  <small>Powered by <b>Ticket Yanga</b></small>
+</div>
+
+<!-- Popup -->
+<div class="ov" id="ov" role="dialog" aria-modal="true" aria-label="Buy tickets">
+  <div class="modal">
+    <button type="button" class="x" id="x" aria-label="Close">&times;</button>
+
+    <!-- Step 1: details form -->
+    <form class="step form on" id="s1" autocomplete="on">
+      <h2>Get your ticket</h2>
+      <p class="sub">Jacaranda School presents The Lion King</p>
+      <label>Full name<input name="name" required autocomplete="name" placeholder="Chikondi Banda"></label>
+      <label>Email<input name="email" type="email" required autocomplete="email" placeholder="chikondi.banda@gmail.com"></label>
+      <label>Phone<input name="phone" type="tel" required autocomplete="tel" placeholder="0999 123 456"></label>
+      <div class="row">
+        <label>Ticket type
+          <select name="type"><option>Regular</option><option>VIP</option><option>Child</option></select>
+        </label>
+        <label>Quantity<input name="qty" type="number" min="1" max="10" value="1" required></label>
+      </div>
+      <button type="submit"><i></i>Buy Ticket</button>
+      <small>Powered by <b>Ticket Yanga</b></small>
+    </form>
+
+    <!-- Step 2: ticket + download -->
+    <div class="step tk" id="s2">
+      <img src="poster.jpg" alt="">
+      <div class="tb">
+        <div class="ev" id="t-host"></div>
+        <h2 id="t-title"></h2>
+        <div class="grid">
+          <div class="full"><div class="k">Name</div><div class="v" id="t-name"></div></div>
+          <div class="full"><div class="k">Email</div><div class="v" id="t-email"></div></div>
+          <div><div class="k">Phone</div><div class="v" id="t-phone"></div></div>
+          <div><div class="k">Ticket</div><div class="v" id="t-type"></div></div>
+          <div><div class="k">Admits</div><div class="v" id="t-qty"></div></div>
+          <div><div class="k">Date</div><div class="v" id="t-date"></div></div>
+          <div class="full"><div class="k">Venue</div><div class="v" id="t-venue"></div></div>
+        </div>
+        <div class="tear"></div>
+        <div class="code"><div class="k">Ticket code</div><div class="v" id="t-code"></div></div>
+        <button type="button" class="full-btn" id="dl"><i></i>Download Ticket</button>
+        <a id="dl-fallback" href="#" target="_blank" rel="noopener">Download didn't start? Open the PDF</a>
+        <small>Powered by <b>Ticket Yanga</b></small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Popup logic (embedded JS) -->
+<script>
+(function(){
+  // ---- Edit these event details ----
+  var EVENT={host:'Jacaranda School presents',title:'The Lion King',date:'Date to be announced',venue:'Venue to be announced'};
+  // ----------------------------------
+  var $=function(id){return document.getElementById(id)};
+  var ov=$('ov'),s1=$('s1'),s2=$('s2'),order=null;
+
+  function open(){ov.classList.add('open');document.body.style.overflow='hidden'}
+  function close(){ov.classList.remove('open');document.body.style.overflow='';
+    setTimeout(function(){s2.classList.remove('on');s1.classList.add('on')},350)}
+  function txt(id,v){$(id).textContent=v}
+
+  function showTicket(o){
+    txt('t-host',EVENT.host);txt('t-title',EVENT.title);txt('t-date',EVENT.date);txt('t-venue',EVENT.venue);
+    txt('t-name',o.name);txt('t-email',o.email);txt('t-phone',o.phone);txt('t-type',o.type);
+    txt('t-qty',o.qty+(Number(o.qty)>1?' people':' person'));txt('t-code',o.code);
+    s1.classList.remove('on');s2.classList.add('on');
+  }
+  function makeCode(){
+    var c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',s='';
+    for(var i=0;i<6;i++)s+=c[Math.floor(Math.random()*c.length)];
+    return 'LK-'+s;
+  }
+
+  $('buy').addEventListener('click',open);
+  $('x').addEventListener('click',close);
+  ov.addEventListener('click',function(e){if(e.target===ov)close()});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&ov.classList.contains('open'))close()});
+
+  s1.addEventListener('submit',function(e){
+    e.preventDefault();
+    order=Object.fromEntries(new FormData(s1).entries());
+    order.code=makeCode();
+    showTicket(order);
+    preparePdf(order);
+  });
+
+  // ---- PDF download (no external libraries) ----
+  function bytesFromDataUrl(d){
+    var b=atob(d.split(',')[1]),u=new Uint8Array(b.length);
+    for(var i=0;i<b.length;i++)u[i]=b.charCodeAt(i);
+    return u;
+  }
+  function buildPdf(jpg,w,h,pw,ph){
+    var parts=[],off=[],len=0;
+    function enc(s){var u=new Uint8Array(s.length);for(var i=0;i<s.length;i++)u[i]=s.charCodeAt(i)&255;return u}
+    function add(p){if(typeof p==='string')p=enc(p);parts.push(p);len+=p.length}
+    function obj(n,body){off[n]=len;add(n+' 0 obj\n'+body+'\nendobj\n')}
+    add('%PDF-1.4\n');
+    obj(1,'<< /Type /Catalog /Pages 2 0 R >>');
+    obj(2,'<< /Type /Pages /Kids [3 0 R] /Count 1 >>');
+    obj(3,'<< /Type /Page /Parent 2 0 R /MediaBox [0 0 '+pw+' '+ph+'] /Resources << /XObject << /Im0 4 0 R >> >> /Contents 5 0 R >>');
+    off[4]=len;
+    add('4 0 obj\n<< /Type /XObject /Subtype /Image /Width '+w+' /Height '+h+' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '+jpg.length+' >>\nstream\n');
+    add(jpg);
+    add('\nendstream\nendobj\n');
+    var cs='q '+pw+' 0 0 '+ph+' 0 0 cm /Im0 Do Q';
+    obj(5,'<< /Length '+cs.length+' >>\nstream\n'+cs+'\nendstream');
+    var xr=len,x='xref\n0 6\n0000000000 65535 f \n';
+    for(var i=1;i<=5;i++)x+=('0000000000'+off[i]).slice(-10)+' 00000 n \n';
+    add(x+'trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n'+xr+'\n%%EOF');
+    var out=new Uint8Array(len),p=0;
+    parts.forEach(function(a){out.set(a,p);p+=a.length});
+    return out;
+  }
+  function drawTicket(o,img){
+    var W=1000,H=520,S=2,c=document.createElement('canvas');
+    c.width=W*S;c.height=H*S;
+    var x=c.getContext('2d');x.scale(S,S);
+    x.fillStyle='#0b0604';x.fillRect(0,0,W,H);
+    if(img){
+      var pw=320,r=Math.max(pw/img.width,H/img.height),w=img.width*r,h=img.height*r;
+      x.save();x.beginPath();x.rect(0,0,pw,H);x.clip();
+      x.drawImage(img,(pw-w)/2,0,w,h);
+      var g=x.createLinearGradient(pw-120,0,pw,0);
+      g.addColorStop(0,'rgba(11,6,4,0)');g.addColorStop(1,'#0b0604');
+      x.fillStyle=g;x.fillRect(0,0,pw,H);x.restore();
+    }
+    var L=360;
+    x.fillStyle='rgba(255,255,255,.55)';x.font='600 13px Inter,Arial,sans-serif';
+    x.fillText(EVENT.host.toUpperCase(),L,64);
+    x.fillStyle='#fff';x.font='600 40px Inter,Arial,sans-serif';
+    x.fillText(EVENT.title,L,112);
+    function field(k,v,px,py){
+      x.fillStyle='rgba(255,255,255,.5)';x.font='600 11px Inter,Arial,sans-serif';x.fillText(k.toUpperCase(),px,py);
+      x.fillStyle='#fff';x.font='600 20px Inter,Arial,sans-serif';x.fillText(String(v).slice(0,30),px,py+28);
+    }
+    field('Name',o.name,L,170);field('Email',o.email,L,240);
+    field('Phone',o.phone,L,310);field('Ticket',o.type,L+230,310);
+    field('Admits',o.qty,L,380);field('Date',EVENT.date,L+230,380);
+    field('Venue',EVENT.venue,L,450);
+    var sx=W-190;
+    x.strokeStyle='rgba(255,255,255,.2)';x.lineWidth=2;x.setLineDash([8,8]);
+    x.beginPath();x.moveTo(sx,20);x.lineTo(sx,H-20);x.stroke();x.setLineDash([]);
+    x.textAlign='center';
+    x.fillStyle='rgba(255,255,255,.5)';x.font='600 11px Inter,Arial,sans-serif';
+    x.fillText('TICKET CODE',sx+95,H/2-30);
+    x.fillStyle='#ff6a1a';x.font='600 26px Inter,Arial,sans-serif';
+    x.fillText(o.code,sx+95,H/2+6);
+    x.fillStyle='rgba(255,255,255,.55)';x.font='400 11px Inter,Arial,sans-serif';
+    x.fillText('POWERED BY TICKET YANGA',sx+95,H-36);
+    // throws if the canvas is tainted (poster blocked) -> caller retries without poster
+    return {url:c.toDataURL('image/jpeg',0.92),w:c.width,h:c.height};
+  }
+  // The PDF is built as soon as the ticket is shown, so the click itself
+  // can start the download right away (browsers block downloads that start late).
+  var dl=$('dl'),fb=$('dl-fallback'),pdfUrl='',pdfName='',token=0;
+  function setLabel(t){dl.lastChild.nodeValue=t}
+  function resetPdf(){
+    token++;
+    if(pdfUrl)URL.revokeObjectURL(pdfUrl);
+    pdfUrl='';fb.style.display='none';dl.disabled=false;setLabel('Download Ticket');
+  }
+  function preparePdf(o){
+    resetPdf();
+    var my=token,done=false;
+    dl.disabled=true;setLabel('Preparing ticket…');
+    function go(img){
+      if(done||my!==token)return;
+      done=true;
+      try{
+        var res;
+        try{res=drawTicket(o,img)}catch(e){res=drawTicket(o,null)}
+        var bytes=buildPdf(bytesFromDataUrl(res.url),res.w,res.h,600,312);
+        pdfUrl=URL.createObjectURL(new Blob([bytes],{type:'application/pdf'}));
+        pdfName='lion-king-ticket-'+o.code+'.pdf';
+        dl.disabled=false;setLabel('Download Ticket');
+      }catch(e){dl.disabled=false;setLabel('Try again')}
+    }
+    var im=new Image();
+    im.onload=function(){go(im)};
+    im.onerror=function(){go(null)};
+    setTimeout(function(){go(null)},4000);
+    im.src='poster.jpg';
+  }
+  function savePdf(){
+    var a=document.createElement('a');
+    a.href=pdfUrl;a.download=pdfName;a.target='_blank';a.rel='noopener';
+    document.body.appendChild(a);a.click();a.remove();
+    fb.href=pdfUrl;fb.download=pdfName;fb.style.display='block';
+  }
+  dl.addEventListener('click',function(){
+    if(!order)return;
+    if(pdfUrl)savePdf();else preparePdf(order);
+  });
+})();
+</script>
+</body>
+</html>
